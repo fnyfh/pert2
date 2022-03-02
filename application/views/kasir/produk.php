@@ -39,9 +39,8 @@
 			<div class="col-12">
 			  <div class="card">
               <div class="card-header">
-                <h3 class="card-title">DataTable with default features</h3>
-                <br>
-                <button class="btn btn-primary" id="btn-create"><i class="fa fa-plus"></i>Create</button>
+				  <div class="float-left"><h3 class="card-title">DataTable with default features</h3></div>
+				<div class="float-right"><button class="btn btn-primary" id="btn-create" onclick="createFan()"><i class="fa fa-plus mr-2"></i>Create</button></div>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -84,7 +83,63 @@
 </div>
 <!-- ./wrapper -->
 
-<?php $this->load->view('template/script')?>
+<!--Modal-->
+<form name="form" action="" method="post" enctype="multipart/form-data" accept-charset="UTF-8" id="form-item">
+		<div id="Modal" class="modal fade" tabindex="-1">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header" style="text-align:center">
+						<h5 id="modal-header"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">
+						
+						<input type="hidden" name="id">
+
+						<div id="modal-body-update-or-create">
+							<div class="form-group">
+								<label>Nama Produk</label>
+								<input type="text" name="nama" class="form-control" required placeholder="Nama Produk">
+							</div>
+
+							<div class="form-group">
+								<label>Kuantitas</label>
+								<input type="number" name="kuantitas" class="form-control" required placeholder="Kuantitas">
+							</div>
+
+							<div class="form-group">
+								<label>Harga Beli</label>
+								<input type="text" name="harga_beli" class="form-control" required placeholder="Harga Beli">
+							</div>
+
+							<div class="form-group">
+								<label>Harga Jual</label>
+								<input type="text" name="harga_jual" class="form-control" required placeholder="Harga Jual">
+							</div>
+
+							<div class="form-group">
+								<label>Owner</label>
+								<select name="id_owner" id="id_owner" class="form-control">
+									<option value="" selected disabled>-- Pilih Owner --</option>
+									<?php foreach($owner as $val){ ?>
+										<option value="<?= $val->id ?>"><?= $val->nama_owner ?></option>
+									<?php } ?>
+								</select>
+								</div>       				
+						</div>
+						
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Back</button>
+						<button type="submit" class="btn btn-success" id="modal-button">Create</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<!--Modal-->
+
+	<?php $this->load->view('template/script')?>
 </body>
 <script>
   $(function () {
@@ -97,26 +152,6 @@
   $(document).ready(function() {
 			var myTable = $('#table').DataTable({});
 			
-			$(document).on('click','#btn-create',function(){
-				$('#Modal').modal('show');
-				
-				$('#modal-header').html('<i class="fa fa-plus"></i> Create');
-				$('#modal-body-update-or-create').removeClass('hidden');
-				$('[name="img"]').addClass('hidden');
-				$('#modal-body-delete').addClass('hidden');
-				$('#modal-button').html('Create');
-				$('#modal-button').removeClass('btn-danger');
-				$('#modal-button').addClass('btn-success');
-				
-				$('[name="id"]').val(id);
-				$('[name="nama"]').val(nama);
-				$('[name="kuantitas"]').val(kuantitas);
-        $('[name="harga_jual"]').val(harga_jual);
-        $('[name="harga_beli"]').val(harga_beli);
-        $('[name="id_owner"]').val(id_owner);
-				
-				document.form.action = '<?php echo base_url();?>Kasir/Create1';
-			});
 			
 			$(document).on('click','#btn-update',function(){
 				$('#Modal').modal('show');
@@ -133,8 +168,8 @@
 				var nama = $(this).data('nama');
 				var kuantitas = $(this).data('kuantitas');
 				var harga_jual = $(this).data('harga_jual');
-        var harga_beli = $(this).data('harga_beli');
-        var id_owner = $(this).data('id_owner');
+				var harga_beli = $(this).data('harga_beli');
+				var id_owner = $(this).data('id_owner');
 				
 				$('[name="id"]').val(id);
 				$('[name="nama"]').val(nama);
@@ -165,41 +200,19 @@
 			});
 			
 		});
+
+		function createFan(){
+			$('#Modal').modal('show');
+				
+				$('#modal-header').html('<i class="fa fa-plus mr-2"></i> Create');
+				$('#modal-body-update-or-create').removeClass('hidden');
+				$('[name="img"]').addClass('hidden');
+				$('#modal-body-delete').addClass('hidden');
+				$('#modal-button').html('Create');
+				$('#modal-button').removeClass('btn-danger');
+				$('#modal-button').addClass('btn-success');
+				
+				$('#form-item').attr('action', '<?= base_url() ?>Kasir/create');
+		}
 </script>
-<!--Modal-->
-<form name="form" action="" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
-		<div id="Modal" class="modal fade" tabindex="-1">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header" style="text-align:center">
-						<h3 id="modal-header"></h3>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">
-						
-						<input type="hidden" name="id">
-						
-						<span id="modal-body-update-or-create">
-							<label>Nama Produk</label>
-							<input type="text" name="nama" class="form-control" placeholder="Nama Produk">
-							<label>Kuantitas</label>
-							<input type="number" name="kuantitas" class="form-control" placeholder="Kuantitas">
-							<label>Harga Jual</label>
-							<input type="text" name="harga_jual" class="form-control" placeholder="Harga Jual">
-							<label>Harga Beli</label>
-							<input type="text" name="harga_beli" class="form-control" placeholder="Harga Beli">
-              				<label>Owner</label>
-							<input type="number" name="id_owner" class="form-control" placeholder="Masukan ID Owner">
-						</span>
-						
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Back</button>
-						<button type="submit" class="btn btn-success" id="modal-button">Create</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-	<!--Modal-->
 </html>

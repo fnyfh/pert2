@@ -14,11 +14,15 @@ class Kasir extends CI_Controller {
 	}
 	public function produk()
 	{
+		
 		$select = $this->db->select('*');
-		$data['read_produk'] = $this->m->get_All('produk',$select);
+
+		$data['read_produk'] = $this->m->Get_All('produk',$select);
+		$data['owner'] = $this->m->Get_All('owner',$select);
+
 		$this->load->view('Kasir/produk',$data);
 	}
-	function Create1()
+	function create()
 	{
 		$data=array(
 			'nama'			=>	$this->input->post('nama'),
